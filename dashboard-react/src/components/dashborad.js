@@ -1,23 +1,25 @@
-import { useState } from "react";
+import React from "react";
 import Graph from "./Graph";
-import Sidebar from "./Sidebar";
+//import Sidebar from "./Sidebar";
 
 function Dashboard() {
-  const [activeData, setActiveData] = useState(null);
-
   return (
     <div className="dashboard-layout">
-      <Sidebar data={activeData} />
+      {/*<Sidebar data={activeData} />*/}
       <div className="charts">
-        <Graph
+        <h1>Olá mundo</h1>
+        {/*<Graph
           data={batteryData}
           onHover={setActiveData}
           type="line"
           field="inst_curr"
-          label="Corrente Instantânea"
-        />
+          label="Corrente Instantânea" 
+        />*/}
+        <Graph />
         
       </div>
     </div>
   );
 }
+
+export default Dashboard;
