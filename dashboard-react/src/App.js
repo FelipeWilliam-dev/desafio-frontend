@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [battery, setBattery] = useState(null);
@@ -15,7 +16,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="App-container">
       <h1>Dados da Mob4ai</h1>
       <h2>/battery</h2>
       <pre>{battery ? JSON.stringify(battery, null, 2) : "Carregando..."}</pre>

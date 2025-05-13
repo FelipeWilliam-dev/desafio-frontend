@@ -7,6 +7,12 @@
   pointer-events: none;
 }
 
+.App-container {
+  padding: 2rem;
+  background-color: #D3D3D3;
+  font-family: Arial, sans-serif;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -21,7 +27,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .App-link {
