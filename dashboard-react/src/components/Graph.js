@@ -51,6 +51,7 @@ function Graph(){
 					</LineChart>
 				</ResponsiveContainer>
 			</div>
+
 			<div className="App-battery">
 				<h2>Nível da Bateria (%)</h2>
 				<ResponsiveContainer width="50%" height={300}>
@@ -60,7 +61,24 @@ function Graph(){
 						<Tooltip
 							labelFormatter={formatDate}
 							formatter={(value)=>[`${value}%`, "Capacidade"]} />
+						<CartesianGrid stroke="#ccc" />
+						<Bar dataKey="batrery_level" fill="#82ca9d" />
 					</BarChart>
+				</ResponsiveContainer>
+			</div>
+
+			<div className="App-temp">
+				<h2>Temperatura da Bateria</h2>
+				<ResponsiveContainer width="50%" height={300}>
+					<LineChart data={temperature}>
+						<XAxis dataKey="temestamp" tickFormatter={formatDate} />
+						<YAxis />
+						<Tooltip
+							labelFormatter={formatDate}
+							formatter={(value) => [`${value}ºC`, "Temp Bateria"]}/>
+							<CartesianGrid stroke="#ccc" />
+							<Line type="monotone" data="temp_bat" stroke="#ff7300" />
+					</LineChart>
 				</ResponsiveContainer>
 
 			</div>
