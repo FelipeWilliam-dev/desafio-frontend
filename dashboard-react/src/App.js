@@ -7,8 +7,12 @@ function App() {
   return (
     <>
     <Header />
+    
     <div className="App-container">
+       
        <Dashboard />
+
+
     </div>
     </>
   );

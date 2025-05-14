@@ -3,7 +3,7 @@ import './Header.css';
 
 function Header() {
   return (
-    <header className="header">
+    <header className="App-header">
       <h1>MOB4AI Dashboard</h1>
     </header>
   );
