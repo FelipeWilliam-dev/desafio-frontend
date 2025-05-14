@@ -1,0 +1,31 @@
+.graph-layout {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.graph-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.graph-controls button {
+  padding: 0.5rem 1rem;
+  background: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.graph-controls button.active {
+  background: #0a74da;
+  color: white;
+  border-color: #0a74da;
+}
+
+.graph-content {
+  display: flex;
+  gap: 2rem;
+}

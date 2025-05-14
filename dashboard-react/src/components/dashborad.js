@@ -1,5 +1,5 @@
 import React from "react";
-import Graph from "./Graph";
+import Graph from "./graphs/GraphLayout";
 //import Sidebar from "./Sidebar";
 
 function Dashboard() {
