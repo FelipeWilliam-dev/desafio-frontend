@@ -1,19 +1,18 @@
 import React from "react";
 import "./App.css";
-import Header from './components/Header';
+//import Header from './components/Header';
 import Dashboard from './components/dashborad';
+
 
 function App() {
   return (
     <>
-    <Header />
-    
-    <div className="App-container">
-       
+    <header className="dashboard-wrapper">
+        <h1>MOB4AI Dashboard</h1>
+    </header>
+    <body>
        <Dashboard />
-
-
-    </div>
+    </body>
     </>
   );
 }

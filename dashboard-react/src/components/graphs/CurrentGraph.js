@@ -6,7 +6,6 @@ function CurrentGraph({ battery, setActiveData }) {
   const data = battery.filter(d => d.inst_curr !== undefined);
 
   const option = {
-    title: { text: 'Corrente Instantânea (mAh)' },
     tooltip: {
       trigger: 'axis',
       formatter: function (params) {
@@ -14,6 +13,7 @@ function CurrentGraph({ battery, setActiveData }) {
         return `
           <strong>${dayjs(d.timestamp).format('DD/MM/YY - HH:mm:ss')}</strong><br/>
           Corrente: ${d.inst_curr} mAh
+          SASD: ${d.rem_cap}
         `;
       }
     },
@@ -36,11 +36,17 @@ function CurrentGraph({ battery, setActiveData }) {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: 300 }}
-      onEvents={{ mouseover: handleMouseOver }}
-    />
+    <>
+    
+    <div className='graph-back-area'>
+      <h2>Corrente Instantânea (mAh)</h2>
+      <ReactECharts
+        option={option}
+        style={{ height: 500, width: '100%'}}
+        onEvents={{ mouseover: handleMouseOver }}
+      />
+    </div>
+    </>
   );
 }
 

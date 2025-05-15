@@ -1,4 +1,3 @@
-// src/components/Sidebar.js
 import React from 'react';
 import './Sidebar.css';
 
@@ -22,7 +21,7 @@ function Sidebar({ data }) {
   if (!data) {
     return (
       <aside className="sidebar">
-        <p className="sidebar-placeholder">Passe o mouse sobre um gráfico para ver os detalhes.</p>
+       
       </aside>
     );
   }
@@ -45,7 +44,7 @@ function Sidebar({ data }) {
       </div>
 
       <div className="sidebar-section">
-        <h4>Temperature Bat</h4>
+        <h4>Temperature</h4>
         <p>{data.temp_bat} °C</p>
       </div>
     </aside>

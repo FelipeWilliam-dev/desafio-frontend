@@ -6,7 +6,6 @@ function BatteryLevelGraph({ battery, setActiveData }) {
   const data = battery.filter(d => d.battery_level !== undefined);
 
   const option = {
-    title: { text: 'Nível da Bateria (%)' },
     tooltip: {
       trigger: 'axis',
       formatter: function (params) {
@@ -35,11 +34,14 @@ function BatteryLevelGraph({ battery, setActiveData }) {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: 300 }}
-      onEvents={{ mouseover: handleMouseOver }}
-    />
+    <div className='graph-back-area'>
+      <h2>Nível da Bateria (%)</h2>
+      <ReactECharts
+        option={option}
+        style={{ height: 500 }}
+        onEvents={{ mouseover: handleMouseOver }}
+      />
+    </div>
   );
 }
 

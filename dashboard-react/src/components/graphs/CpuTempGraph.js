@@ -6,7 +6,6 @@ function CpuTempGraph({ temperature, setActiveData }) {
   const data = temperature.filter(d => d.temp_cpu !== undefined);
 
   const option = {
-    title: { text: 'Temperatura da CPU (°C)' },
     tooltip: {
       trigger: 'axis',
       formatter: function (params) {
@@ -36,12 +35,14 @@ function CpuTempGraph({ temperature, setActiveData }) {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: 300 }}
-      onEvents={{ mouseover: handleMouseOver }}
-    />
+    <div className='graph-back-area'>
+      <h2>Temperatura da CPU (°C)</h2>
+      <ReactECharts
+        option={option}
+        style={{ height: 500 }}
+        onEvents={{ mouseover: handleMouseOver }}
+      />
+      </div>
   );
 }
-
 export default CpuTempGraph;

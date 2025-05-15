@@ -6,7 +6,6 @@ function BatteryTempGraph({ temperature, setActiveData }) {
   const data = temperature.filter(d => d.temp_bat !== undefined);
 
   const option = {
-    title: { text: 'Temperatura da Bateria (°C)' },
     tooltip: {
       trigger: 'axis',
       formatter: function (params) {
@@ -36,11 +35,14 @@ function BatteryTempGraph({ temperature, setActiveData }) {
   };
 
   return (
-    <ReactECharts
-      option={option}
-      style={{ height: 300 }}
-      onEvents={{ mouseover: handleMouseOver }}
-    />
+    <div className='graph-back-area'>
+      <h2>Temperatura da Bateria (°C)</h2>
+      <ReactECharts
+        option={option}
+        style={{ height: 500, width: '100%' }}
+        onEvents={{ mouseover: handleMouseOver }}
+      />
+    </div>
   );
 }
 

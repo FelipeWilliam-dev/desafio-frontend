@@ -4,7 +4,7 @@ import BatteryTempGraph from './graphs/BatteryTempGraph';
 import CpuTempGraph from './graphs/CpuTempGraph';*/
 import Sidebar from '../Sidebar';
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-//import './GraphLayout.css';
+import '../Graph.css';
 
 
 const GRAPH_COMPONENTS = {
@@ -20,6 +20,7 @@ const GRAPH_COMPONENTS = {
   tempCpu: CpuTempGraph,
 };*/
 
+
 function GraphLayout() {
   const [battery, setBattery] = useState([]);
   const [temperature, setTemperature] = useState([]);
@@ -32,7 +33,6 @@ function GraphLayout() {
 		setActiveGraph(key);
 		localStorage.setItem('selectedGraph', key);
 	};
-	
 	
 
   useEffect(() => {
@@ -48,26 +48,33 @@ function GraphLayout() {
   const ActiveGraphComponent = GRAPH_COMPONENTS[activeGraph];
 
   return (
-    <div className="graph-layout">
-      <div className="graph-controls">
-        <button onClick={() => handleGraphChange('current')}>Corrente</button>
-        <button onClick={() => handleGraphChange('battery')}>Bateria</button>
-        <button onClick={() => handleGraphChange('tempBat')}>Temp. Bateria</button>
-        <button onClick={() => handleGraphChange('tempCpu')}>Temp. CPU</button>
+    <div className="graph-wrapper">
+      <div className="graph-buttons">
+        <button className="all-button" onClick={() => setActiveGraph('all')}>ALL →</button>
+        <div className="main-buttons">
+          <button onClick={() => handleGraphChange('current')}>Instant Current</button>
+          <button onClick={() => handleGraphChange('battery')}>Battery</button>
+          <button onClick={() => handleGraphChange('tempBat')}>Temperature Bat</button>
+          <button onClick={() => handleGraphChange('tempCpu')}>Temperature CPU</button>
+        </div>
+        
       </div>
-      <div className="graph-content">
-        {ActiveGraphComponent && (
-					<Suspense fallback={<p>Carregando gráfico...</p>}>
-						<ActiveGraphComponent
-							battery={battery}
-							temperature={temperature}
-							setActiveData={setActiveData}
-						/>
-					</Suspense>
-        )}
-        <Sidebar data={activeData} />
-      </div>
+
+        <div className="graph-area">
+          {ActiveGraphComponent && (
+            <Suspense fallback={<p>Carregando gráfico...</p>}>
+              <ActiveGraphComponent
+                battery={battery}
+                temperature={temperature}
+                setActiveData={setActiveData}
+              />
+            </Suspense>
+          )}
+          <Sidebar data={activeData} />
+        </div>
+      
     </div>
+
   );
 }
 
