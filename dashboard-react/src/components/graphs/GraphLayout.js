@@ -1,11 +1,7 @@
-/*import CurrentGraph from './graphs/CurrentGraph';
-import BatteryLevelGraph from './graphs/BatteryLevelGraph';
-import BatteryTempGraph from './graphs/BatteryTempGraph';
-import CpuTempGraph from './graphs/CpuTempGraph';*/
+// GraphLayout.js
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import Sidebar from '../Sidebar';
-import React, { lazy, Suspense, useState, useEffect } from 'react';
 import '../Graph.css';
-
 
 const GRAPH_COMPONENTS = {
   current: lazy(() => import('./CurrentGraph')),
@@ -13,27 +9,11 @@ const GRAPH_COMPONENTS = {
   tempBat: lazy(() => import('./BatteryTempGraph')),
   tempCpu: lazy(() => import('./CpuTempGraph')),
 };
-/*const GRAPH_COMPONENTS = {
-  current: CurrentGraph,
-  battery: BatteryLevelGraph,
-  tempBat: BatteryTempGraph,
-  tempCpu: CpuTempGraph,
-};*/
 
-
-function GraphLayout() {
+function GraphLayout({ activeGraph }) {
   const [battery, setBattery] = useState([]);
   const [temperature, setTemperature] = useState([]);
   const [activeData, setActiveData] = useState(null);
-	const [activeGraph, setActiveGraph] = useState(
-		localStorage.getItem('selectedGraph') || 'current'
-	);
-
-	const handleGraphChange = (key) => {
-		setActiveGraph(key);
-		localStorage.setItem('selectedGraph', key);
-	};
-	
 
   useEffect(() => {
     fetch("http://localhost:8080/battery")
@@ -49,32 +29,41 @@ function GraphLayout() {
 
   return (
     <div className="graph-wrapper">
-      <div className="graph-buttons">
-        <button className="all-button" onClick={() => setActiveGraph('all')}>ALL →</button>
-        <div className="main-buttons">
-          <button onClick={() => handleGraphChange('current')}>Instant Current</button>
-          <button onClick={() => handleGraphChange('battery')}>Battery</button>
-          <button onClick={() => handleGraphChange('tempBat')}>Temperature Bat</button>
-          <button onClick={() => handleGraphChange('tempCpu')}>Temperature CPU</button>
-        </div>
-        
-      </div>
-
-        <div className="graph-area">
-          {ActiveGraphComponent && (
-            <Suspense fallback={<p>Carregando gráfico...</p>}>
-              <ActiveGraphComponent
-                battery={battery}
-                temperature={temperature}
-                setActiveData={setActiveData}
-              />
-            </Suspense>
+      <div className="graph-area">
+        <div className="graph-stack">
+          {activeGraph === 'all' ? (
+           <>
+              {Object.keys(GRAPH_COMPONENTS).map((key, index) => {
+                const Component = GRAPH_COMPONENTS[key];
+                return ( 
+                
+                  <Suspense fallback={<p>Carregando {key}...</p>} key={index}>
+                    <div className='graph-box'>
+                      <Component
+                      battery={battery}
+                      temperature={temperature}
+                      setActiveData={setActiveData}
+                    />
+                    </div>
+                  </Suspense>
+                );
+              })}
+            </>
+          ) : (
+            ActiveGraphComponent && (
+              <Suspense fallback={<p>Carregando gráfico...</p>}>
+                <ActiveGraphComponent
+                  battery={battery}
+                  temperature={temperature}
+                  setActiveData={setActiveData}
+                />
+              </Suspense>
+            )
           )}
-          <Sidebar data={activeData} />
         </div>
-      
+        <Sidebar data={activeData} />
+      </div>
     </div>
-
   );
 }
 
