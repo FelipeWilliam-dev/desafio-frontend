@@ -2,32 +2,39 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import dayjs from 'dayjs';
 
-function BatteryTempGraph({ temperature, setActiveData }) {
-  const data = temperature.filter(d => d.temp_bat !== undefined);
+function BatteryTempGraph({ data, setActiveData }) {
+  const filtered = data.filter(d => d.temp_bat !== undefined);
 
   const option = {
     tooltip: {
       trigger: 'axis',
       formatter: function (params) {
         const d = params[0].data;
+        setTimeout(() => setActiveData(d), 0);
         return `
           <strong>${dayjs(d.timestamp).format('DD/MM/YY - HH:mm:ss')}</strong><br/>
-          Temp. Bateria: ${d.temp_bat} °C
+          Current: ${d.inst_curr ?? '-'} mAh<br/>
+          Capacity: ${d.battery_level ?? '-'} %<br/>
+          Temp. Battery: ${d.temp_bat != null ? (d.temp_bat / 1000).toFixed(1) : '-'} °C<br/>
+          Temp. CPU: ${d.temp_cpu != null ? (d.temp_cpu / 1000).toFixed(1) : '-'} °C
         `;
       }
     },
     xAxis: {
       type: 'category',
-      data: data.map(d => dayjs(d.timestamp).format('HH:mm:ss')),
+      data: filtered.map(d => dayjs(d.timestamp).format('HH:mm:ss')),
       axisLabel: { rotate: 45 }
     },
     yAxis: { type: 'value' },
-    series: [{
-      data: data.map(d => ({ ...d, value: d.temp_bat })),
-      type: 'line',
-      smooth: true,
-      lineStyle: { color: '#ff7300' }
-    }]
+    series: [
+      {
+        data: filtered.map(d => ({ ...d, value: d.temp_bat })),
+        type: 'line',
+        showSymbol:true, 
+        smooth: true,
+        lineStyle: { color: '#ff7300' }
+      }
+    ]
   };
 
   const handleMouseOver = (e) => {
@@ -39,8 +46,8 @@ function BatteryTempGraph({ temperature, setActiveData }) {
       <h2>Temperatura da Bateria (°C)</h2>
       <ReactECharts
         option={option}
-        style={{ height: 500, width: '100%' }}
-        onEvents={{ mouseover: handleMouseOver }}
+        style={{ height: 500 }}
+        onEvents={{ updateAxisPointer: handleMouseOver }}
       />
     </div>
   );

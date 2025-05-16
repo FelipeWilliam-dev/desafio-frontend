@@ -8,11 +8,10 @@ function App() {
   return (
     <>
     <header className="dashboard-wrapper">
-        <h1>MOB4AI Dashboard</h1>
+        <h1>Dashboard</h1>
     </header>
-    <body>
+
        <Dashboard />
-    </body>
     </>
   );
 }

@@ -85,9 +85,9 @@
 .sidebar {
   position: sticky;
   top: 0;
-  height: 50vh;
+  height: 55vh;
   overflow-y: auto;
-  width: 250px;
+  width: 300px;
   background-color: #f7fafc;
   padding: 1rem;
   box-sizing: border-box;

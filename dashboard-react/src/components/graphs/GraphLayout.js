@@ -10,19 +10,29 @@ const GRAPH_COMPONENTS = {
   tempCpu: lazy(() => import('./CpuTempGraph')),
 };
 
+function mergeByTimestamp(battery, temperature) {
+  const tempMap = new Map(temperature.map(t => [t.timestamp, t]));
+
+  return battery.map(b => ({
+    ...b,
+    ...(tempMap.get(b.timestamp) || {})
+  }));
+}
+
 function GraphLayout({ activeGraph }) {
-  const [battery, setBattery] = useState([]);
-  const [temperature, setTemperature] = useState([]);
+  const [mergedData, setMergedData] = useState([]);
   const [activeData, setActiveData] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/battery")
-      .then((res) => res.json())
-      .then((data) => setBattery(Array.isArray(data) ? data : [data]));
-
-    fetch("http://localhost:8080/temperature")
-      .then((res) => res.json())
-      .then((data) => setTemperature(Array.isArray(data) ? data : [data]));
+    Promise.all([
+      fetch("http://localhost:8080/battery").then(res => res.json()),
+      fetch("http://localhost:8080/temperature").then(res => res.json())
+    ]).then(([batData, tempData]) => {
+      const battery = Array.isArray(batData) ? batData : [batData];
+      const temperature = Array.isArray(tempData) ? tempData : [tempData];
+      const merged = mergeByTimestamp(battery, temperature);
+      setMergedData(merged);
+    });
   }, []);
 
   const ActiveGraphComponent = GRAPH_COMPONENTS[activeGraph];
@@ -32,18 +42,16 @@ function GraphLayout({ activeGraph }) {
       <div className="graph-area">
         <div className="graph-stack">
           {activeGraph === 'all' ? (
-           <>
+            <>
               {Object.keys(GRAPH_COMPONENTS).map((key, index) => {
                 const Component = GRAPH_COMPONENTS[key];
-                return ( 
-                
+                return (
                   <Suspense fallback={<p>Carregando {key}...</p>} key={index}>
                     <div className='graph-box'>
                       <Component
-                      battery={battery}
-                      temperature={temperature}
-                      setActiveData={setActiveData}
-                    />
+                        data={mergedData}
+                        setActiveData={setActiveData}
+                      />
                     </div>
                   </Suspense>
                 );
@@ -53,15 +61,14 @@ function GraphLayout({ activeGraph }) {
             ActiveGraphComponent && (
               <Suspense fallback={<p>Carregando gráfico...</p>}>
                 <ActiveGraphComponent
-                  battery={battery}
-                  temperature={temperature}
+                  data={mergedData}
                   setActiveData={setActiveData}
                 />
               </Suspense>
             )
           )}
         </div>
-        <Sidebar data={activeData} />
+        <Sidebar data={activeData} setActiveData={setActiveData} />
       </div>
     </div>
   );
